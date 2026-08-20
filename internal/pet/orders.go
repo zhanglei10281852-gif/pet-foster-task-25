@@ -8,6 +8,8 @@ import (
 	"math"
 	"strings"
 	"time"
+
+	"github.com/zhanglei10281852-gif/pet-foster-go/internal/identity"
 )
 
 type CreateOrderInput struct {
@@ -92,7 +94,7 @@ func (s *Service) CreateOrder(ctx context.Context, principal Principal, input Cr
 		serviceRows = append(serviceRows, selected)
 	}
 	now := s.now().UTC()
-	orderNo := (FosterOrder{}).NumberAt(now)
+	orderNo := strings.ToUpper(identity.New("fo"))
 	result, err := tx.ExecContext(ctx, `INSERT INTO foster_orders(order_no,pet_id,user_id,room_id,start_time,end_time,room_type,total_amount,status,remarks,create_time,update_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`, orderNo, input.PetID, ownerID, input.RoomID, formatStoredTime(input.StartTime), formatStoredTime(input.EndTime), roomType, total, "PENDING", input.Remarks, formatStoredTime(now), formatStoredTime(now))
 	if err != nil {
 		return FosterOrder{}, translateServiceError(err)

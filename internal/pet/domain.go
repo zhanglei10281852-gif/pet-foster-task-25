@@ -92,11 +92,6 @@ type FosterOrder struct {
 	UpdatedAt      time.Time      `json:"updateTime"`
 }
 
-func (o FosterOrder) NumberAt(now time.Time) string {
-	stamp := now.UTC()
-	return fmt.Sprintf("FO%s%03d", stamp.Format("20060102150405"), stamp.Nanosecond()/1_000_000)
-}
-
 type DailyRecord struct {
 	ID         int64     `json:"recordId"`
 	OrderID    int64     `json:"orderId"`
